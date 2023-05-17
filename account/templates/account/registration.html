@@ -1,0 +1,36 @@
+{% extends 'account/base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <h1 class="mt-3">Регистрация</h1>
+    <form>
+        <div class="mb-3">
+            <label for="email" class="form-label">Электронная почта</label>
+            <input type="email" class="form-control" id="email" autofocus required>
+        </div>
+        <div class="mb-3">
+            <label for="first_name" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="first_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="last_name" class="form-label">Фамилия</label>
+            <input type="text" class="form-control" id="last_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="password1" class="form-label">Пароль</label>
+            <input type="password" class="form-control" id="password1" autocomplete="new-password" required>
+        </div>
+        <div class="mb-3">
+            <label for="password2" class="form-label">Повтор пароля</label>
+            <input type="password" class="form-control" id="password2" autocomplete="new-password" required>
+        </div>
+        <div class="mt-1 mb-4">
+            <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+            <div class="w-100 text-center my-2">
+                <span>или</span>
+            </div>
+            <a href="#" type="button" class="btn btn-outline-primary w-100">Войти</a>
+        </div>
+    </form>
+{% endblock %}
