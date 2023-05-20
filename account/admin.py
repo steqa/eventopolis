@@ -19,25 +19,25 @@ class UserAdmin(UserAdmin):
              'email',
              'password'
          )}),
-        ('Personal info',
+        ('Персональная информация',
          {'fields': (
              'first_name',
              'last_name',
              'telegram_username',
          )}),
-        ('Image',
+        ('Изображение',
          {'fields': (
              'preview_image',
              'image'
          )}),
-        ('Permissions',
+        ('Права доступа',
          {'fields': (
              'is_admin',
              'is_staff',
              'is_superuser',
              'is_email_verified'
          )}),
-        ('Important dates',
+        ('Даты',
          {'fields': (
              'created_at',
              'last_login',
