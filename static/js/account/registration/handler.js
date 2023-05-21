@@ -4,6 +4,6 @@ registrationForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const valid = validateRegistrationForm(this);
     if (valid) {
-        console.log('POST');
+        sendFormData(this);
     }
 });
