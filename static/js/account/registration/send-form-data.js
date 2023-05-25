@@ -1,4 +1,4 @@
-let responseStatus = 0
+let responseStatus = null
 
 
 function sendFormData(form) {
@@ -11,18 +11,23 @@ function sendFormData(form) {
         body: formData
     })
         .then((response) => {
+            responseStatus = response.status
             return response.json();
         })
         .then((data) => {
-            const errors = JSON.parse(data);
-            form.querySelectorAll('input').forEach((input) => {
-                const errorsDiv = input.parentNode.querySelector('.invalid-feedback');
-                if (input.name in errors) {
-                    errorsDiv.innerText = errors[input.name][0]['message'];
-                } else {
-                    errorsDiv.innerText = '';
-                }
-            })
+            if (responseStatus === 400) {
+                const errors = JSON.parse(data);
+                form.querySelectorAll('input').forEach((input) => {
+                    const errorsDiv = input.parentNode.querySelector('.invalid-feedback');
+                    if (input.name in errors) {
+                        errorsDiv.innerText = errors[input.name][0]['message'];
+                    } else {
+                        errorsDiv.innerText = '';
+                    }
+                })
+            } else if (responseStatus === 200) {
+                window.location.replace(data['redirect']);
+            }
 
         })
         .catch((error) => console.error(error));
