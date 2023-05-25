@@ -1,9 +1,11 @@
 from django.http.response import JsonResponse
 from django.shortcuts import render
 
+from .decorators import unauthenticated_user
 from .forms import CustomUserCreationForm
 
 
+@unauthenticated_user
 def registration(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
