@@ -15,7 +15,7 @@ class TestViews(TestCase):
             email='test@gmail.com',
             first_name='First',
             last_name='Last',
-            password='test123',
+            password='test1pass123',
             is_email_verified=True
         )
         cls.unauthorized_client = Client()

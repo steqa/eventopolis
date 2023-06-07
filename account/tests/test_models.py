@@ -18,7 +18,7 @@ class TestModels(TestCase):
             email='test@gmail.com',
             first_name='First',
             last_name='Last',
-            password='test123',
+            password='test1pass123',
             is_email_verified=True
         )
 
@@ -50,7 +50,7 @@ class TestModels(TestCase):
                 email='test2@gmail.com',
                 first_name='first',
                 last_name='last',
-                password='test123',
+                password='test1pass123',
                 is_email_verified=True
             )
 
