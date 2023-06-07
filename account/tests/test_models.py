@@ -24,6 +24,7 @@ class TestModels(TestCase):
 
     def test_default_path_to_the_profile_image_is_set_correctly(self):
         expected_filepath = os.path.join(settings.MEDIA_ROOT, 'default_profile_image.jpg')
+
         self.assertEquals(self.user.image.path, expected_filepath)
 
     def test_path_to_the_profile_image_is_set_correctly(self):
@@ -52,4 +53,5 @@ class TestModels(TestCase):
                 password='test123',
                 is_email_verified=True
             )
+
         self.assertEqual(error.exception.message_dict, expected_error_messages)

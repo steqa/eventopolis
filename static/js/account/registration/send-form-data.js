@@ -25,8 +25,8 @@ function sendFormData(form) {
                         errorsDiv.innerText = '';
                     }
                 })
-            } else if (responseStatus === 200) {
-                window.location.replace(data['redirect']);
+            } else if (responseStatus === 302) {
+                window.location.replace(window.location.origin + data['url']);
             }
 
         })

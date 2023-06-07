@@ -17,9 +17,9 @@ def registration(request):
             send_activation_email(request, user)
             return JsonResponse(
                 data={
-                    'redirect': request.build_absolute_uri(reverse('activation'))
+                    'url': reverse('activation')
                 },
-                status=200)
+                status=302)
         else:
             return JsonResponse(
                 data=form.errors.as_json(),
@@ -41,4 +41,4 @@ def activate_user(request, uid: str, token: str):
         user.save()
         return redirect('registration')
     else:
-        return render(request, 'account/activation_fail.html')
+        return render(request, 'account/activation_fail.html', status=400)
