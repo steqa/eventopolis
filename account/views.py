@@ -42,3 +42,8 @@ def activate_user(request, uid: str, token: str):
         return redirect('registration')
     else:
         return render(request, 'account/activation_fail.html', status=400)
+
+
+@unauthenticated_user
+def login(request):
+    return render(request, 'account/login.html')
