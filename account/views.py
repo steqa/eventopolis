@@ -1,3 +1,6 @@
+import json
+
+from django.contrib.auth import authenticate, login
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -15,15 +18,9 @@ def registration(request):
         if form.is_valid():
             user = form.save()
             send_activation_email(request, user)
-            return JsonResponse(
-                data={
-                    'url': reverse('activation')
-                },
-                status=302)
+            return JsonResponse(data={'url': reverse('activation')}, status=302)
         else:
-            return JsonResponse(
-                data=form.errors.as_json(),
-                status=400, safe=False)
+            return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
 
     return render(request, 'account/registration.html')
 
@@ -45,5 +42,17 @@ def activate_user(request, uid: str, token: str):
 
 
 @unauthenticated_user
-def login(request):
+def login_user(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(email=email, password=password)
+        if user:
+            login(request, user)
+            return JsonResponse(data={'url': '#'}, status=302)
+        else:
+            response = {'email': [
+                {'message': 'Неверный адрес электронной почты или пароль.'}]}
+            return JsonResponse(data=json.dumps(response), status=400, safe=False)
+
     return render(request, 'account/login.html')

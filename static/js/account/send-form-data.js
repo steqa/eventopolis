@@ -28,7 +28,6 @@ function sendFormData(form) {
             } else if (responseStatus === 302) {
                 window.location.replace(window.location.origin + data['url']);
             }
-
         })
         .catch((error) => console.error(error));
 }
