@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1 class="mt-3">Регистрация</h1>
-    <form id="registration-form">
+    <form id="form">
         {% csrf_token %}
         <div class="mb-3">
             <label for="email" class="form-label">Электронная почта</label>
@@ -40,11 +40,13 @@
             <div class="w-100 text-center my-2">
                 <span>или</span>
             </div>
-            <a href="#" type="button" class="btn btn-outline-primary w-100">Войти</a>
+            <a href="{% url 'login' %}" type="button" class="btn btn-outline-primary w-100">Войти</a>
         </div>
     </form>
-    <script type="text/javascript" src="{% static 'js/account/registration/handler.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/account/registration/form-validator.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/account/registration/send-form-data.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/account/handler.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/account/validators.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/account/display-feedback.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/account/registration/validate-form.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/get-form-data.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/account/send-form-data.js' %}"></script>
 {% endblock %}
