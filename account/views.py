@@ -36,7 +36,7 @@ def activate_user(request, uid: str, token: str):
     if user and activation_token.check_token(user, token):
         user.is_email_verified = True
         user.save()
-        return redirect('registration')
+        return redirect('login')
     else:
         return render(request, 'account/activation_fail.html', status=400)
 

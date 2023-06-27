@@ -23,6 +23,7 @@ class TestViews(TestCase):
         cls.authorized_client.force_login(cls.user)
         cls.registration_url = reverse('registration')
         cls.activation_url = reverse('activation')
+        cls.login_user_url = reverse('login')
 
     def test_registration_GET_authorized(self):
         response = self.authorized_client.get(self.registration_url)
@@ -54,7 +55,7 @@ class TestViews(TestCase):
             'first_name': 'First',
             'last_name': 'Last',
             'password1': 'test1pass123',
-            'password2': 'test1pass123',
+            'password2': 'test1pass123'
         })
         redirect_url = json.loads(response.content)['url']
         try:
@@ -82,7 +83,7 @@ class TestViews(TestCase):
         }))
 
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(response.url, self.registration_url)
+        self.assertEquals(response.url, self.login_user_url)
         self.assertTrue(User.objects.get(email='test2@gmail.com').is_email_verified)
 
     def test_activation_GET_authorized(self):
@@ -114,3 +115,34 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 400)
         self.assertTemplateUsed(response, 'account/activation_fail.html')
+
+    def test_login_user_GET_authorized(self):
+        response = self.authorized_client.get(self.login_user_url)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url, '/')
+
+    def test_login_user_GET_unauthorized(self):
+        response = self.unauthorized_client.get(self.login_user_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'account/login.html')
+
+    def test_login_user_POST_authorized(self):
+        response = self.authorized_client.post(self.login_user_url)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url, '/')
+
+    def test_login_user_POST_unauthorized_no_data(self):
+        response = self.unauthorized_client.post(self.login_user_url)
+
+        self.assertEquals(response.status_code, 400)
+
+    def test_login_user_POST_unauthorized_invalid_data(self):
+        response = self.unauthorized_client.post(self.login_user_url, {
+            'email': 'test@gmail.com',
+            'password': 'wrong-password'
+        })
+
+        self.assertEquals(response.status_code, 400)
