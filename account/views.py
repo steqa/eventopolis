@@ -56,3 +56,8 @@ def login_user(request):
             return JsonResponse(data=json.dumps(response), status=400, safe=False)
 
     return render(request, 'account/login.html')
+
+
+@unauthenticated_user
+def reset_password(request):
+    return render(request, 'account/reset_password.html')
