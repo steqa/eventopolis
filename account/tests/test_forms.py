@@ -19,7 +19,7 @@ class TestForms(TestCase):
         form = CustomUserCreationForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 5)
+        self.assertEqual(len(form.errors), 5)
 
     def test_custom_user_creation_form_name_in_lower_case(self):
         form = CustomUserCreationForm(data={
@@ -31,4 +31,4 @@ class TestForms(TestCase):
         })
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 2)
+        self.assertEqual(len(form.errors), 2)

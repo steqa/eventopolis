@@ -25,7 +25,7 @@ class TestModels(TestCase):
     def test_default_path_to_the_profile_image_is_set_correctly(self):
         expected_filepath = os.path.join(settings.MEDIA_ROOT, 'default_profile_image.jpg')
 
-        self.assertEquals(self.user.image.path, expected_filepath)
+        self.assertEqual(self.user.image.path, expected_filepath)
 
     def test_path_to_the_profile_image_is_set_correctly(self):
         image_dir = os.path.join(settings.MEDIA_ROOT, 'user_images/0/')
@@ -38,7 +38,7 @@ class TestModels(TestCase):
             self.user.save()
 
         self.addCleanup(cleanup)
-        self.assertEquals(self.user.image.path, image_dir + 'profile_image.jpg')
+        self.assertEqual(self.user.image.path, image_dir + 'profile_image.jpg')
 
     def test_save(self):
         expected_error_messages = {
