@@ -1,14 +1,17 @@
 import json
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import SetPasswordForm
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from .decorators import unauthenticated_user
 from .forms import CustomUserCreationForm
+from .models import User
 from .tokens import activation_token
-from .utils import get_user_by_uid, send_activation_email
+from .utils import get_user_by_uid, send_activation_email, \
+    send_reset_password_email
 
 
 @unauthenticated_user
@@ -60,4 +63,31 @@ def login_user(request):
 
 @unauthenticated_user
 def reset_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = User.objects.filter(email=email)
+        if user.exists():
+            send_reset_password_email(request, user.first())
+            return JsonResponse(data={'url': reverse('activation')}, status=302)
+        else:
+            response = {'email': [
+                {'message': 'Неверный адрес электронной почты.'}]}
+            return JsonResponse(data=json.dumps(response), status=400, safe=False)
     return render(request, 'account/reset_password.html')
+
+
+@unauthenticated_user
+def reset_password_confirm(request, uid: str, token: str):
+    user = get_user_by_uid(uid)
+    if user and activation_token.check_token(user, token):
+        if request.method == 'POST':
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse(data={'url': reverse('login')}, status=302)
+            else:
+                return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+
+        return render(request, 'account/reset_password_confirm.html')
+    else:
+        return render(request, 'account/activation_fail.html', status=400)

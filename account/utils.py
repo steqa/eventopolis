@@ -22,6 +22,18 @@ def send_activation_email(request, user: User) -> None:
     send_email(user, subject, body)
 
 
+def send_reset_password_email(request, user: User) -> None:
+    subject = 'Eventopolis: восстановление пароля.'
+    body = render_to_string('account/reset_password_email.html', {
+        'user': user,
+        'protocol': 'https' if request.is_secure() else 'http',
+        'domain': get_current_site(request),
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': activation_token.make_token(user)
+    })
+    send_email(user, subject, body)
+
+
 def send_email(user: User, subject: str, body: str) -> None:
     email = EmailMessage(subject=subject, body=body,
                          from_email=settings.EMAIL_HOST_USER,
