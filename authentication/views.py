@@ -25,12 +25,12 @@ def registration(request):
         else:
             return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
 
-    return render(request, 'account/registration.html')
+    return render(request, 'authentication/registration.html')
 
 
 @unauthenticated_user
 def activation(request):
-    return render(request, 'account/activation.html')
+    return render(request, 'authentication/activation.html')
 
 
 @unauthenticated_user
@@ -41,7 +41,7 @@ def activate_user(request, uid: str, token: str):
         user.save()
         return redirect('login')
     else:
-        return render(request, 'account/activation_fail.html', status=400)
+        return render(request, 'authentication/activation_fail.html', status=400)
 
 
 @unauthenticated_user
@@ -58,7 +58,7 @@ def login_user(request):
                 {'message': 'Неверный адрес электронной почты или пароль.'}]}
             return JsonResponse(data=json.dumps(response), status=400, safe=False)
 
-    return render(request, 'account/login.html')
+    return render(request, 'authentication/login.html')
 
 
 @unauthenticated_user
@@ -73,7 +73,7 @@ def reset_password(request):
             response = {'email': [
                 {'message': 'Неверный адрес электронной почты.'}]}
             return JsonResponse(data=json.dumps(response), status=400, safe=False)
-    return render(request, 'account/reset_password.html')
+    return render(request, 'authentication/reset_password.html')
 
 
 @unauthenticated_user
@@ -88,6 +88,6 @@ def reset_password_confirm(request, uid: str, token: str):
             else:
                 return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
 
-        return render(request, 'account/reset_password_confirm.html')
+        return render(request, 'authentication/reset_password_confirm.html')
     else:
-        return render(request, 'account/activation_fail.html', status=400)
+        return render(request, 'authentication/activation_fail.html', status=400)

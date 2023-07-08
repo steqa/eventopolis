@@ -5,14 +5,14 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from account.models import User
+from authentication.models import User
 from .thread import SendEmailThread
 from .tokens import activation_token
 
 
 def send_activation_email(request, user: User) -> None:
     subject = 'Eventopolis: подтвердите регистрацию.'
-    body = render_to_string('account/activation_email.html', {
+    body = render_to_string('authentication/activation_email.html', {
         'user': user,
         'protocol': 'https' if request.is_secure() else 'http',
         'domain': get_current_site(request),
@@ -24,7 +24,7 @@ def send_activation_email(request, user: User) -> None:
 
 def send_reset_password_email(request, user: User) -> None:
     subject = 'Eventopolis: восстановление пароля.'
-    body = render_to_string('account/reset_password_email.html', {
+    body = render_to_string('authentication/reset_password_email.html', {
         'user': user,
         'protocol': 'https' if request.is_secure() else 'http',
         'domain': get_current_site(request),

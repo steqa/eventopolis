@@ -1,4 +1,4 @@
-{% extends 'account/base.html' %}
+{% extends 'authentication/base.html' %}
 
 {% load static %}
 
@@ -30,10 +30,10 @@
             </div>
         </div>
     </form>
-    <script type="text/javascript" src="{% static 'js/account/handler.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/account/validators.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/account/display-feedback.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/account/login/validate-form.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/handler.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/validators.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/display-feedback.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/login/validate-form.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/get-form-data.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/account/send-form-data.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/send-form-data.js' %}"></script>
 {% endblock %}

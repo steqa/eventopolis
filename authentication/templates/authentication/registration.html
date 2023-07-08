@@ -1,0 +1,52 @@
+{% extends 'authentication/base.html' %}
+
+{% load static %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <h1 class="mt-3">Регистрация</h1>
+    <form id="form">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="email" class="form-label">Электронная почта</label>
+            <input type="email" class="form-control" id="email" name="email" autofocus required>
+            <div class="invalid-feedback"></div>
+        </div>
+        <div class="mb-3">
+            <label for="first-name" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="first-name" name="first_name" maxlength="150" required>
+            <div class="invalid-feedback"></div>
+        </div>
+        <div class="mb-3">
+            <label for="last-name" class="form-label">Фамилия</label>
+            <input type="text" class="form-control" id="last-name" name="last_name" maxlength="150" required>
+            <div class="invalid-feedback"></div>
+        </div>
+        <div class="mb-3">
+            <label for="password1" class="form-label">Пароль</label>
+            <input type="password" class="form-control" id="password1" name="password1" autocomplete="new-password"
+                   required>
+            <div class="invalid-feedback"></div>
+        </div>
+        <div class="mb-3">
+            <label for="password2" class="form-label">Повтор пароля</label>
+            <input type="password" class="form-control" id="password2" name="password2" autocomplete="new-password"
+                   required>
+            <div class="invalid-feedback"></div>
+        </div>
+        <div class="mt-1 mb-4">
+            <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+            <div class="w-100 text-center my-2">
+                <span>или</span>
+            </div>
+            <a href="{% url 'login' %}" type="button" class="btn btn-outline-primary w-100">Войти</a>
+        </div>
+    </form>
+    <script type="text/javascript" src="{% static 'js/authentication/handler.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/validators.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/display-feedback.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/registration/validate-form.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/get-form-data.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/send-form-data.js' %}"></script>
+{% endblock %}
