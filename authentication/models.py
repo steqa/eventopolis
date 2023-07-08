@@ -33,6 +33,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         upload_to=_get_profile_image_filepath,
         default=_get_default_profile_image,
         null=True, blank=True)
+    slug = models.SlugField(
+        'Текстовый идентификатор страницы',
+        unique=True, blank=True, null=True, max_length=32,
+        validators=[MinLengthValidator(5)])
     created_at = models.DateTimeField(
         'дата создания',
         auto_now_add=True)
@@ -75,4 +79,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         self.full_clean()
+        if not self.slug:
+            import hashlib
+            hasher = hashlib.sha256()
+            hasher.update(self.email.encode())
+            slug = hasher.hexdigest()[:15]
+            self.slug = slug
         return super().save(*args, **kwargs)

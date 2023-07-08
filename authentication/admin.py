@@ -16,6 +16,7 @@ class UserAdmin(UserAdmin):
         (None,
          {'fields': (
              'id',
+             'slug',
              'email',
              'password'
          )}),
@@ -47,6 +48,7 @@ class UserAdmin(UserAdmin):
     add_fieldsets = (
         (None,
          {'fields': (
+             'slug',
              'email',
              'first_name',
              'last_name',
