@@ -1,7 +1,10 @@
+import hashlib
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.db import models
+from django.urls import reverse
 
 from .managers import UserManager
 
@@ -34,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=_get_default_profile_image,
         null=True, blank=True)
     slug = models.SlugField(
-        'Текстовый идентификатор страницы',
+        'текстовый идентификатор страницы',
         unique=True, blank=True, null=True, max_length=32,
         validators=[MinLengthValidator(5)])
     created_at = models.DateTimeField(
@@ -80,9 +83,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         self.full_clean()
         if not self.slug:
-            import hashlib
             hasher = hashlib.sha256()
             hasher.update(self.email.encode())
             slug = hasher.hexdigest()[:15]
             self.slug = slug
         return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('user', kwargs={'slug': self.slug})

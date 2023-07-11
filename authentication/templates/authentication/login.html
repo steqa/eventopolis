@@ -5,28 +5,28 @@
 {% block title %}Вход{% endblock %}
 
 {% block content %}
-    <h1 class="mt-3">Вход</h1>
+    <h1 class="mb-3">Вход</h1>
     <form id="form">
         {% csrf_token %}
         <div class="mb-3">
-            <label for="email" class="form-label">Электронная почта</label>
-            <input type="email" class="form-control" id="email" name="email" autofocus required>
+            <label for="email" class="form-label mb-1">Электронная почта</label>
+            <input type="email" class="form-control form-control-sm" id="email" name="email" autofocus required>
             <div class="invalid-feedback"></div>
         </div>
         <div class="mb-3">
-            <label for="password" class="form-label">Пароль</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <label for="password" class="form-label mb-1">Пароль</label>
+            <input type="password" class="form-control form-control-sm" id="password" name="password" required>
             <div class="invalid-feedback"></div>
         </div>
         <div class="mt-1 mb-4">
-            <button type="submit" class="btn btn-primary w-100">Войти</button>
+            <button type="submit" class="btn btn-primary w-100 btn-sm">Войти</button>
             <div class="w-100 text-center my-2">
                 <span>или</span>
             </div>
             <a href="{% url 'registration' %}" type="button"
-               class="btn btn-outline-primary w-100">Зарегистрироваться</a>
+               class="btn btn-outline-primary w-100 btn-sm">Зарегистрироваться</a>
             <div class="w-100 text-center my-2">
-                <a href="{% url 'reset-password' %}">Забыли пароль?</a>
+                <a href="{% url 'reset-password' %}" class="btn btn-link btn-sm">Забыли пароль?</a>
             </div>
         </div>
     </form>

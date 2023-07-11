@@ -1,0 +1,57 @@
+.nav-link svg {
+    color: rgba(var(--bs-white-rgb), 0.3);
+}
+
+.nav-link {
+    color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+    padding-left: 0.3rem !important;
+    border-radius: var(--bs-border-radius) !important;
+}
+
+.nav-link:hover, .navbar-nav .nav-link.active:hover {
+    background: rgba(209, 232, 255, 0.105) !important;
+}
+
+.nav-link:active {
+    background: rgba(209, 232, 255, 0.155) !important;
+}
+
+.navbar-nav .nav-link.active {
+    background: rgba(209, 232, 255, 0.055) !important;
+}
+
+.navbar-nav .nav-link.active svg {
+    color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+}
+
+.modal-header, .modal-footer {
+    border: none;
+}
+
+.modal-body, .modal-body hr {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.btn-dark-link {
+    font-size: 1rem;
+    padding: 0;
+    background: none;
+    border: none;
+    color: rgba(var(--bs-secondary-rgb), 1) !important;
+    text-decoration: none;
+    text-decoration-color: rgba(var(--bs-secondary-rgb), 0) !important;
+    transition: color 0.15s ease-in-out, text-decoration-color 0.15s ease-in-out;
+}
+
+.btn-dark-link:hover {
+    color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+    text-decoration: underline;
+    text-decoration-color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+}
+
+.btn-dark-link.btn-dark-link-sm {
+    font-size: 0.875rem;
+}

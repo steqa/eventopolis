@@ -52,7 +52,7 @@ def login_user(request):
         user = authenticate(email=email, password=password)
         if user:
             login(request, user)
-            return JsonResponse(data={'url': '#'}, status=302)
+            return JsonResponse(data={'url': reverse('events')}, status=302)
         else:
             response = {'email': [
                 {'message': 'Неверный адрес электронной почты или пароль.'}]}
