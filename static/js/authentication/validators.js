@@ -46,10 +46,22 @@ function validatePassword(value) {
     return errors;
 }
 
-function validateSecondPassword(value) {
+function validateSecondPassword(value, firstPasswordID, secondPasswordID) {
     let errors = [];
-    if (value !== document.getElementById('password1').value) {
-        errors.push('Пароли не совпадают.');
+    if (value !== document.getElementById(firstPasswordID).value) {
+        const firstPasswordLabel = document.querySelector(`label[for='${firstPasswordID}']`).textContent;
+        const secondPasswordLabel = document.querySelector(`label[for='${secondPasswordID}']`).textContent;
+        errors.push(`${firstPasswordLabel} и ${secondPasswordLabel.toLowerCase()} не совпадают.`);
+    }
+    return errors;
+}
+
+function validateNewPassword(value, oldPasswordID, newPasswordID) {
+    let errors = [];
+    if (value === document.getElementById(oldPasswordID).value) {
+        const oldPasswordLabel = document.querySelector(`label[for='${oldPasswordID}']`).textContent;
+        const newPasswordLabel = document.querySelector(`label[for='${newPasswordID}']`).textContent;
+        errors.push(`${newPasswordLabel} слишком похож на ${oldPasswordLabel.toLowerCase()}.`);
     }
     return errors;
 }

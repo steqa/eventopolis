@@ -10,7 +10,7 @@ function validateForm(form) {
         [firstNameInput, validateFirstName(firstNameInput.value)],
         [lastNameInput, validateLastName(lastNameInput.value)],
         [passwordInput, validatePassword(passwordInput.value)],
-        [secondPasswordInput, validateSecondPassword(secondPasswordInput.value)]
+        [secondPasswordInput, validateSecondPassword(secondPasswordInput.value, passwordInput.id, secondPasswordInput.id)]
     ];
 
     return displayFeedback(feedback);

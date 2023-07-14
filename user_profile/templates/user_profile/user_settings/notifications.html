@@ -20,7 +20,8 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="mb-3 form-check">
-                <input class="form-check-input" type="checkbox" id="telegram-notifications">
+                <input class="form-check-input form-control p-0" type="checkbox" id="telegram-notifications"
+                       name="telegram_notifications" value="{{ user.telegram_notifications }}">
                 <label class="form-check-label" for="telegram-notifications">
                     Получать уведомления в телеграм
                 </label>
@@ -32,4 +33,6 @@
             </button>
         </form>
     </div>
+    <script type="text/javascript"
+            src="{% static 'js/user_profile/user_settings/notifications_settings/checkbox.js' %}"></script>
 {% endblock %}

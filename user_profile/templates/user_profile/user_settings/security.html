@@ -47,47 +47,53 @@
     <div class="modal fade" id="changePasswordModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Изменение пароля</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <hr class="mb-3">
-                    <div class="mb-3">
-                        <label for="old-password" class="form-label fw-semibold mb-1">Старый
-                            пароль</label>
-                        <input type="password" class="form-control form-control-sm modalInput"
-                               id="old-password"
-                               name="old_password" required autocomplete="off">
-                        <div class="invalid-feedback"></div>
+                <form id="modalForm">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Изменение пароля</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="new-password1" class="form-label fw-semibold mb-1">Новый
-                            пароль</label>
-                        <input type="password" class="form-control form-control-sm modalInput"
-                               id="new-password1"
-                               name="new_password1" required autocomplete="new-password">
-                        <div class="invalid-feedback"></div>
+                    <div class="modal-body">
+                        <hr class="mb-3">
+                        <div class="mb-3">
+                            <label for="old-password" class="form-label fw-semibold mb-1">Старый пароль</label>
+                            <input type="password" class="form-control form-control-sm modalInput"
+                                   id="old-password"
+                                   name="old_password" required autocomplete="off">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-password1" class="form-label fw-semibold mb-1">Новый пароль</label>
+                            <input type="password" class="form-control form-control-sm modalInput"
+                                   id="new-password1"
+                                   name="new_password1" required autocomplete="new-password">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="">
+                            <label for="new-password2" class="form-label fw-semibold mb-1">Повтор нового пароля</label>
+                            <input type="password" class="form-control form-control-sm modalInput"
+                                   id="new-password2"
+                                   name="new_password2" required autocomplete="new-password">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <hr class="mt-4">
                     </div>
-                    <div class="">
-                        <label for="new-password2" class="form-label fw-semibold mb-1">
-                            Повтор Нового пароля</label>
-                        <input type="password" class="form-control form-control-sm modalInput"
-                               id="new-password2"
-                               name="new_password2" required autocomplete="new-password">
-                        <div class="invalid-feedback"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Отменить
+                        </button>
+                        <button type="submit" class="btn btn-success btn-sm" id="modalSaveBtn" disabled>
+                            Сохранить
+                        </button>
                     </div>
-                    <hr class="mt-4">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Отменить
-                    </button>
-                    <button type="submit" class="btn btn-success btn-sm" id="modalSaveBtn" disabled>
-                        Сохранить
-                    </button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+    <script type="text/javascript"
+            src="{% static 'js/user_profile/user_settings/security_settings/update-modal-save-btn.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/user_profile/user_settings/security_settings/modal-handler.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/user_profile/user_settings/security_settings/validate-modal-form.js' %}"></script>
 {% endblock %}
