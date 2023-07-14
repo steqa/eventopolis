@@ -15,6 +15,9 @@ function validateFirstName(value) {
     if (value.split(' ').length > 1) {
         errors.push('Имя должно содержать одно слово.');
     }
+    if (!(_testStringContainsOnlyLetters(value))) {
+        errors.push('Имя может содержать только буквы.');
+    }
     return errors;
 }
 
@@ -25,6 +28,9 @@ function validateLastName(value) {
     }
     if (value.split(' ').length > 1) {
         errors.push('Фамилия должна содержать одно слово.');
+    }
+    if (!(_testStringContainsOnlyLetters(value))) {
+        errors.push('Фамилия может содержать только буквы.');
     }
     return errors;
 }
@@ -46,4 +52,25 @@ function validateSecondPassword(value) {
         errors.push('Пароли не совпадают.');
     }
     return errors;
+}
+
+function _testStringContainsOnlyLetters(string) {
+    let inStringOnlyLetters = true;
+    for (let i = 0; i < string.length; i++) {
+        const character = string[i];
+        if (!(_testForLetter(character))) {
+            inStringOnlyLetters = false;
+        }
+    }
+    return inStringOnlyLetters;
+}
+
+function _testForLetter(character) {
+    try {
+        eval("let " + character + ";");
+        let regExSpecial = /[^\$_]/;
+        return regExSpecial.test(character);
+    } catch (error) {
+        return false;
+    }
 }

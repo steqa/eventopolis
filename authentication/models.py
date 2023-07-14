@@ -72,11 +72,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     def clean(self):
         errors = {}
         if self.first_name and self.first_name[0].islower():
-            errors[
-                'first_name'] = 'Имя не должно начинаться с маленькой буквы.'
+            errors['first_name'] = 'Имя не должно начинаться ' \
+                                   'с маленькой буквы.'
+        if not self.first_name.isalpha():
+            errors['first_name'] = 'Имя может содержать только буквы.'
         if self.last_name and self.last_name[0].islower():
-            errors[
-                'last_name'] = 'Фамилия не должна начинаться с маленькой буквы.'
+            errors['last_name'] = 'Фамилия не должна начинаться ' \
+                                  'с маленькой буквы.'
+        if not self.last_name.isalpha():
+            errors['last_name'] = 'Фамилия может содержать только буквы.'
         if errors:
             raise ValidationError(errors)
 
