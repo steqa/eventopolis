@@ -9,7 +9,7 @@
         <form id="form">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="telegram_username" class="form-label fw-semibold mb-1">Имя пользователя телеграм</label>
+                <label for="telegram-username" class="form-label fw-semibold mb-1">Имя пользователя телеграм</label>
                 {% if user.telegram_username %}
                     <input type="text" class="form-control form-control-sm" id="telegram-username"
                            name="telegram_username" value="{{ user.telegram_username }}" maxlength="32" required>
@@ -21,8 +21,8 @@
             </div>
             <div class="mb-3 form-check">
                 <input class="form-check-input" type="checkbox" id="telegram-notifications">
-                <label class="form-check-label" for="telegram_notifications">
-                    Получать уведомления в Telegram
+                <label class="form-check-label" for="telegram-notifications">
+                    Получать уведомления в телеграм
                 </label>
                 <br>
                 <button type="button" class="btn-dark-link btn-dark-link-sm">Подробнее</button>
