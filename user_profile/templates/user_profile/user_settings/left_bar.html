@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% block active-settings-notifications %}{% endblock %}" aria-current="page"
+                    <a class="nav-link {% block active-notifications-settings %}{% endblock %}" aria-current="page"
                        href="{% url 'user-settings-notifications' %}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                              class="bi bi-bell pb-1" viewBox="0 0 16 16">
@@ -45,4 +45,9 @@
 
     </div>
     <script type="text/javascript" src="{% static 'js/user_profile/user_settings/update-save-btn.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/handler.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/authentication/validators.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/display-feedback.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/get-form-data.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/send-form-data.js' %}"></script>
 {% endblock %}

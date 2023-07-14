@@ -66,6 +66,36 @@ function validateNewPassword(value, oldPasswordID, newPasswordID) {
     return errors;
 }
 
+function validateSlug(value) {
+    let errors = [];
+    if (value.length < 5) {
+        errors.push('Введённый адрес страницы слишком короткий. Он должен содержать как минимум 5 символов.');
+    }
+    if (value.length > 32) {
+        errors.push('Введённый адрес страницы слишком длинный. Он может содержать максимум 32 символа.');
+    }
+    const slug = /[a-z0-9_-]+/gi;
+    if (!(slug.test(value) && value.match(slug)[0] === value)) {
+        errors.push('Адрес страницы должен состоять только из латинских букв, цифр, знаков подчеркивания или дефиса.');
+    }
+    return errors;
+}
+
+function validateTelegramUsername(value) {
+    let errors = [];
+    if (value.length < 5) {
+        errors.push('Введённое имя пользователя телеграм слишком короткое. Оно должно содержать как минимум 5 символов.');
+    }
+    if (value.length > 32) {
+        errors.push('Введённое имя пользователя телеграм слишком длинное. Оно может содержать максимум 32 символа.');
+    }
+    const telegramUsername = /[a-z0-9_]+/gi;
+    if (!(telegramUsername.test(value) && value.match(telegramUsername)[0] === value)) {
+        errors.push('Имя пользователя телеграм должно состоять только из латинских букв, цифр или знаков подчеркивания.');
+    }
+    return errors;
+}
+
 function _testStringContainsOnlyLetters(string) {
     let inStringOnlyLetters = true;
     for (let i = 0; i < string.length; i++) {
