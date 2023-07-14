@@ -27,10 +27,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(
         'фамилия',
         max_length=150)
+    about_me = models.TextField(
+        'обо мне',
+        max_length=150, null=True, blank=True)
     telegram_username = models.CharField(
         'имя пользователя телеграм',
         max_length=32, null=True, blank=True,
         validators=[MinLengthValidator(5)])
+    telegram_notifications = models.BooleanField(
+        'получать уведомления в телеграм',
+        default=False)
     image = models.ImageField(
         'изображение',
         upload_to=_get_profile_image_filepath,

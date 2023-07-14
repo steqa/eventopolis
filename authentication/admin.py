@@ -24,7 +24,12 @@ class UserAdmin(UserAdmin):
          {'fields': (
              'first_name',
              'last_name',
+             'about_me'
+         )}),
+        ('Телеграм уведомления',
+         {'fields': (
              'telegram_username',
+             'telegram_notifications'
          )}),
         ('Изображение',
          {'fields': (
