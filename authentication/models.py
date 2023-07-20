@@ -21,7 +21,7 @@ def _get_default_profile_image():
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         'электронная почта',
-        unique=True)
+        max_length=260, unique=True)
     first_name = models.CharField(
         'имя',
         max_length=150)
@@ -95,11 +95,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             error = 'Фамилия может содержать только буквы.'
             errors['last_name'] = error
 
-        telegram_username_allowed = ascii_letters + digits + '_'
-        if any(i not in telegram_username_allowed for i in self.telegram_username):
-            error = 'Имя пользователя телеграм должно состоять только из' \
-                    'латинских букв, цифр или знаков подчеркивания.'
-            errors['telegram_username'] = error
+        if self.telegram_username:
+            telegram_username_allowed = ascii_letters + digits + '_'
+            if any(i not in telegram_username_allowed for i in self.telegram_username):
+                error = 'Имя пользователя телеграм должно состоять только из' \
+                        'латинских букв, цифр или знаков подчеркивания.'
+                errors['telegram_username'] = error
 
         if errors:
             raise ValidationError(errors)
