@@ -96,6 +96,24 @@ function validateTelegramUsername(value) {
     return errors;
 }
 
+function validateNewEmail1(value, oldEmailID){
+    let errors = []
+    if (value === document.getElementById(oldEmailID).value) {
+        errors.push('Адрес электронной почты совпадает с тем, который уже определен.')
+    }
+    return errors;
+}
+
+function validateNewEmail2(value, newEmail1ID, newEmail2ID){
+    let errors = [];
+    if (value !== document.getElementById(newEmail1ID).value) {
+        const newEmail1dLabel = document.querySelector(`label[for='${newEmail1ID}']`).textContent;
+        const newEmail2Label = document.querySelector(`label[for='${newEmail2ID}']`).textContent;
+        errors.push(`${newEmail1dLabel} и ${newEmail2Label.toLowerCase()} не совпадают.`);
+    }
+    return errors;
+}
+
 function _testStringContainsOnlyLetters(string) {
     let inStringOnlyLetters = true;
     for (let i = 0; i < string.length; i++) {

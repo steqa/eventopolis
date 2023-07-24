@@ -1,3 +1,7 @@
+.btn {
+    --bs-btn-font-weight: 600;
+}
+
 .nav-link svg {
     color: rgba(var(--bs-white-rgb), 0.3);
 }

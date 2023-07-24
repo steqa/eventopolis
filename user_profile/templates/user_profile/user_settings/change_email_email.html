@@ -1,0 +1,6 @@
+{% autoescape off %}
+    Здравствуйте, {{ user.first_name }}. Вы запросили смену адреса электронной почты в {{ domain }}.
+    Для подтверждения перейдите по ссылке:
+    {{ protocol }}://{{ domain }}{% url 'change-email-confirm' uid=uid token=token new_email=new_email %}
+    Если вы не хотели сменить адрес электронной почты, можете проигнорировать это сообщение.
+{% endautoescape %}

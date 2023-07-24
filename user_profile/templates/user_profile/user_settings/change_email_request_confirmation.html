@@ -1,0 +1,13 @@
+{% extends 'user_profile/user_settings/left_bar.html' %}
+
+{% block title %}Подтверждение адреса электронной почты{% endblock %}
+{% block active-security-settings %}active{% endblock %}
+
+{% block settings %}
+    <div class="col-xl-6 col-12 order-lg-2 order-3">
+        <h2 class="mb-3">Подтвердите адрес электронной почты.</h2>
+        <p>Вам на почту отправлено электронное письмо. Для подтверждения перейдите по ссылке в этом письме. Если вы не
+        получили письмо - проверьте папку спам или повторите попытку позже.</p>
+        <a href="{% url 'user-settings-security' %}" class="btn btn-outline-secondary btn-sm mt-2">Назад</a>
+    </div>
+{% endblock %}

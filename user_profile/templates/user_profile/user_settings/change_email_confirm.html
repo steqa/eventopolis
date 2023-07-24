@@ -1,0 +1,11 @@
+{% extends 'authentication/base.html' %}
+
+{% load static %}
+
+{% block title %}Изменение адреса электронной почты{% endblock %}
+
+{% block content %}
+    <h1 class="mb-3">Изменение адреса электронной почты</h1>
+    <p>Вы успешно изменили адрес электронной почты.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary btn-sm mt-2">Войти</a>
+{% endblock %}

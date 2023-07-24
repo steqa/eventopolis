@@ -1,0 +1,30 @@
+{% extends 'user_profile/user_settings/left_bar.html' %}
+{% load static %}
+
+{% block title %}Изменение адреса электронной почты{% endblock %}
+{% block active-security-settings %}active{% endblock %}
+
+{% block settings %}
+    <div class="col-xl-6 col-12 order-lg-2 order-3">
+        <form id="form">
+            {% csrf_token %}
+            <input id="old-email" name="old_email" value="{{ request.user.email }}" style="display: none">
+            <div class="mb-3">
+                <label for="new-email1" class="form-label mb-1">Новый адрес электронной почты</label>
+                <input type="email" class="form-control form-control-sm" id="new-email1" name="new_email1" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                <label for="new-email2" class="form-label mb-1">Повтор нового адреса электронной почты</label>
+                <input type="email" class="form-control form-control-sm" id="new-email2" name="new_email2" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <a href="{% url 'user-settings-security' %}" class="btn btn-secondary btn-sm mt-2">Отменить</a>
+            <button type="submit" class="btn btn-primary btn-sm mt-2" id="saveBtn" disabled>Продолжить
+            </button>
+        </form>
+    </div>
+
+    <script type="text/javascript"
+            src="{% static 'js/user_profile/user_settings/change_email/validate-form.js' %}"></script>
+{% endblock %}
