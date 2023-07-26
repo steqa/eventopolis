@@ -1,6 +1,7 @@
 import json
 import threading
 
+from django.contrib.auth.models import AnonymousUser
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -20,6 +21,8 @@ class BaseTestCase(TestCase):
             password='test1pass123',
             is_email_verified=True
         )
+        cls.user.set_password('test1pass123')
+        cls.user.save()
         cls.unauthorized_client = Client()
         cls.authorized_client = Client()
         cls.authorized_client.force_login(cls.user)
@@ -141,6 +144,16 @@ class LoginUserTestCase(BaseTestCase):
 
         self.assertRedirects(response, self.authorized_reverse_url)
 
+    def test_POST_unauthorized_valid_data(self):
+        response = self.unauthorized_client.post(self.login_user_url, {
+            'email': 'test@gmail.com',
+            'password': 'test1pass123'
+        })
+        redirect_url = json.loads(response.content)['url']
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(redirect_url, self.authorized_reverse_url)
+
     def test_POST_unauthorized_no_data(self):
         response = self.unauthorized_client.post(self.login_user_url)
 
@@ -203,8 +216,8 @@ class ResetPasswordTestCase(BaseTestCase):
         self.assertIsInstance(thread, SendEmailThread)
 
         email = thread.__dict__['email'].__dict__
-        activation_token = email['body'].split('\n')[3].split('/')[-1]
-        uid = email['body'].split('\n')[3].split('/')[-2]
+        activation_token = email['body'].split('\n')[3].split('/')[-2]
+        uid = email['body'].split('\n')[3].split('/')[-3]
         email_to = email['to'][0]
 
         self.assertEqual(email_to, 'test@gmail.com')
@@ -253,3 +266,15 @@ class ResetPasswordConfirmTestCase(BaseTestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertTemplateUsed(response, 'authentication/activation_fail.html')
+
+
+class LogoutUserTestCase(BaseTestCase):
+    logout_user_url = reverse('logout')
+    login_url = reverse('login')
+
+    def test_logout(self):
+        response = self.authorized_client.get(self.logout_user_url)
+
+        response_user = getattr(response.wsgi_request, 'user', None)
+        self.assertIsInstance(response_user, AnonymousUser)
+        self.assertRedirects(response, self.login_url)

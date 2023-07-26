@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.db import models
-from django.urls import reverse
 
 from .managers import UserManager
 
@@ -99,7 +98,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             telegram_username_allowed = ascii_letters + digits + '_'
             if any(i not in telegram_username_allowed for i in self.telegram_username):
                 error = 'Имя пользователя телеграм должно состоять только из' \
-                        'латинских букв, цифр или знаков подчеркивания.'
+                        ' латинских букв, цифр или знаков подчеркивания.'
                 errors['telegram_username'] = error
 
         if errors:
@@ -113,6 +112,3 @@ class User(AbstractBaseUser, PermissionsMixin):
             slug = hasher.hexdigest()[:15]
             self.slug = slug
         return super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse('user', kwargs={'slug': self.slug})

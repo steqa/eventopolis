@@ -1,7 +1,6 @@
 import json
 
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import SetPasswordForm
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render

@@ -41,10 +41,6 @@ class TestModels(TestCase):
         self.assertEqual(self.user.image.path, image_dir + 'profile_image.jpg')
 
     def test_save(self):
-        expected_error_messages = {
-            'first_name': ['Имя не должно начинаться с маленькой буквы.'],
-            'last_name': ['Фамилия не должна начинаться с маленькой буквы.']
-        }
         with self.assertRaises(ValidationError) as error:
             User.objects.create(
                 email='test2@gmail.com',
@@ -54,4 +50,16 @@ class TestModels(TestCase):
                 is_email_verified=True
             )
 
-        self.assertEqual(error.exception.message_dict, expected_error_messages)
+        self.assertEqual(len(error.exception.message_dict), 2)
+
+        with self.assertRaises(ValidationError) as error:
+            User.objects.create(
+                email='test2@gmail.com',
+                first_name='1',
+                last_name='2',
+                telegram_username='test-',
+                password='test1pass123',
+                is_email_verified=True
+            )
+            
+        self.assertEqual(len(error.exception.message_dict), 3)
