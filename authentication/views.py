@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 from django.contrib.auth.forms import SetPasswordForm
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
@@ -91,3 +92,8 @@ def reset_password_confirm(request, uid: str, token: str):
         return render(request, 'authentication/reset_password_confirm.html')
     else:
         return render(request, 'authentication/activation_fail.html', status=400)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
