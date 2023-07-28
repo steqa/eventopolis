@@ -1,4 +1,5 @@
 from django.contrib.auth import logout
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -24,14 +25,21 @@ def user_settings_personal(request):
 
 def user_settings_security(request):
     if request.method == 'POST':
+        user = request.user
         field_type = request.GET.get('fieldType') if request.GET.get('fieldType') else None
         if field_type == 'slug':
             form = UserSlugChangeForm(request.POST)
             if form.is_valid():
-                user = request.user
                 user.slug = request.POST.get('slug')
                 user.save()
                 return JsonResponse(data={'url': reverse('user-settings-security')}, status=302)
+            else:
+                return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+        elif field_type == 'password':
+            form = PasswordChangeForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse(data={'url': reverse('login')}, status=302)
             else:
                 return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
 
