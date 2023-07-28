@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from authentication.forms import UserEmailChangeForm, \
-    UserPersonalDataChangeForm
+    UserPersonalDataChangeForm, UserSlugChangeForm
 from authentication.tokens import activation_token
 from authentication.utils import decode_urlsafe_base64, get_user_by_uid, \
     send_change_email_email
@@ -24,7 +24,17 @@ def user_settings_personal(request):
 
 def user_settings_security(request):
     if request.method == 'POST':
-        print(request.POST)
+        field_type = request.GET.get('fieldType') if request.GET.get('fieldType') else None
+        if field_type == 'slug':
+            form = UserSlugChangeForm(request.POST)
+            if form.is_valid():
+                user = request.user
+                user.slug = request.POST.get('slug')
+                user.save()
+                return JsonResponse(data={'url': reverse('user-settings-security')}, status=302)
+            else:
+                return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+
     return render(request, 'user_profile/user_settings/security.html')
 
 
