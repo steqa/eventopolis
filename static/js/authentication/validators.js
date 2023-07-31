@@ -68,15 +68,14 @@ function validateNewPassword(value, oldPasswordID, newPasswordID) {
 
 function validateSlug(value) {
     let errors = [];
-    if (value.length < 5) {
-        errors.push('Введённый адрес страницы слишком короткий. Он должен содержать как минимум 5 символов.');
-    }
-    if (value.length > 32) {
-        errors.push('Введённый адрес страницы слишком длинный. Он может содержать максимум 32 символа.');
-    }
-    const slug = /[a-z0-9_-]+/gi;
-    if (!(slug.test(value) && value.match(slug)[0] === value)) {
-        errors.push('Адрес страницы должен состоять только из латинских букв, цифр, знаков подчеркивания или дефиса.');
+    if (value) {
+        if (value.length > 32) {
+            errors.push('Введённый адрес страницы слишком длинный. Он может содержать максимум 32 символа.');
+        }
+        const slug = /[a-z0-9_-]+/gi;
+        if (!(slug.test(value) && value.match(slug)[0] === value)) {
+            errors.push('Адрес страницы должен состоять только из латинских букв, цифр, знаков подчеркивания или дефиса.');
+        }
     }
     return errors;
 }
@@ -96,7 +95,7 @@ function validateTelegramUsername(value) {
     return errors;
 }
 
-function validateNewEmail1(value, oldEmailID){
+function validateNewEmail1(value, oldEmailID) {
     let errors = []
     if (value === document.getElementById(oldEmailID).value) {
         errors.push('Адрес электронной почты совпадает с тем, который уже определен.')
@@ -104,7 +103,7 @@ function validateNewEmail1(value, oldEmailID){
     return errors;
 }
 
-function validateNewEmail2(value, newEmail1ID, newEmail2ID){
+function validateNewEmail2(value, newEmail1ID, newEmail2ID) {
     let errors = [];
     if (value !== document.getElementById(newEmail1ID).value) {
         const newEmail1dLabel = document.querySelector(`label[for='${newEmail1ID}']`).textContent;

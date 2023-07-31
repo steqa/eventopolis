@@ -78,28 +78,36 @@ class User(AbstractBaseUser, PermissionsMixin):
     def clean(self):
         errors = {}
 
-        if self.first_name and self.first_name[0].islower():
-            error = 'Имя не должно начинаться с маленькой буквы.'
-            errors['first_name'] = error
+        if self.first_name:
+            if self.first_name[0].islower():
+                error = 'Имя не должно начинаться с маленькой буквы.'
+                errors['first_name'] = error
 
-        if not self.first_name.isalpha():
-            error = 'Имя может содержать только буквы.'
-            errors['first_name'] = error
+            if not self.first_name.isalpha():
+                error = 'Имя может содержать только буквы.'
+                errors['first_name'] = error
 
-        if self.last_name and self.last_name[0].islower():
-            error = 'Фамилия не должна начинаться с маленькой буквы.'
-            errors['last_name'] = error
+        if self.last_name:
+            if self.last_name[0].islower():
+                error = 'Фамилия не должна начинаться с маленькой буквы.'
+                errors['last_name'] = error
 
-        if not self.last_name.isalpha():
-            error = 'Фамилия может содержать только буквы.'
-            errors['last_name'] = error
+            if not self.last_name.isalpha():
+                error = 'Фамилия может содержать только буквы.'
+                errors['last_name'] = error
 
         if self.telegram_username:
-            telegram_username_allowed = ascii_letters + digits + '_'
-            if any(i not in telegram_username_allowed for i in self.telegram_username):
+            allowed_chars = ascii_letters + digits + '_'
+            if any(i not in allowed_chars for i in self.telegram_username):
                 error = 'Имя пользователя телеграм должно состоять только из' \
                         ' латинских букв, цифр или знаков подчеркивания.'
                 errors['telegram_username'] = error
+
+        if self.slug:
+            exists_user = User.objects.filter(slug=self.slug).first()
+            if exists_user and exists_user.id != self.id:
+                error = 'Пользователь с таким адресом страницы уже существует.'
+                errors['slug'] = error
 
         if errors:
             raise ValidationError(errors)
@@ -110,5 +118,9 @@ class User(AbstractBaseUser, PermissionsMixin):
             hasher = hashlib.sha256()
             hasher.update(self.email.encode())
             slug = hasher.hexdigest()[:15]
+            while User.objects.filter(slug=slug).exists():
+                hasher.update(slug.encode())
+                slug = hasher.hexdigest()[:15]
+
             self.slug = slug
         return super().save(*args, **kwargs)

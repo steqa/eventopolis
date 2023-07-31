@@ -1,12 +1,12 @@
 let responseStatus = null
 
 
-function sendFormData(form, urlParams='') {
+function sendFormData(form, urlParams = '') {
     const formData = getFormData(form);
     fetch(window.location.href + urlParams, {
         method: 'POST',
         headers: {
-            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
         },
         body: formData
     })

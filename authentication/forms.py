@@ -73,21 +73,7 @@ class UserEmailChangeForm(forms.Form):
                 )
 
 
-class UserSlugChangeForm(forms.Form):
-    error_messages = {
-        'slug_exists': {
-            'slug': 'Пользователь с таким адресом '
-                    'страницы уже существует.'
-        },
-    }
-
-    slug = forms.SlugField(max_length=32, min_length=5)
-
-    def clean(self):
-        slug = self.cleaned_data.get('slug')
-        slug_is_exists = User.objects.filter(slug=slug).exists()
-        if slug_is_exists:
-            raise forms.ValidationError(
-                self.error_messages['slug_exists'],
-                code='slug_exists'
-            )
+class UserSlugChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('slug',)
