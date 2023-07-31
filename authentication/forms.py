@@ -77,3 +77,9 @@ class UserSlugChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('slug',)
+
+
+class UserImageChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('image',)

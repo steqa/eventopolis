@@ -103,6 +103,22 @@ class User(AbstractBaseUser, PermissionsMixin):
                         ' латинских букв, цифр или знаков подчеркивания.'
                 errors['telegram_username'] = error
 
+        if self.image:
+            allowed_file_types = ('jpg', 'jpeg')
+            allowed_file_size = 1048576
+
+            if self.image.size > allowed_file_size:
+                error = 'Размер изображения не может превышать 1 МБ.'
+                errors['image'] = error
+
+            file_type = None
+            if len(self.image.name.split('.')) > 1:
+                file_type = self.image.name.split('.')[-1]
+
+            if file_type not in allowed_file_types:
+                error = 'Доступные форматы изображения: JPG, JPEG.'
+                errors['image'] = error
+
         if self.slug:
             exists_user = User.objects.filter(slug=self.slug).first()
             if exists_user and exists_user.id != self.id:

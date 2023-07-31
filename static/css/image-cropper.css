@@ -1,0 +1,70 @@
+.cropper-bg {
+    background-image: none;
+}
+
+.cropper-view-box {
+    outline-color: var(--bs-primary);
+}
+
+.cropper-dashed {
+    border: none;
+}
+
+.point-e, .point-n, .point-w, .point-s {
+    display: none;
+}
+
+.cropper-line {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.cropper-center:before, .cropper-center:after {
+    content: none;
+}
+
+.cropper-face {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0);
+    overflow: hidden;
+}
+
+.cropper-face:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 100px rgba(0, 0, 0, .5);
+}
+
+.cropper-point {
+    height: 9px !important;
+    width: 9px !important;
+    background-color: var(--bs-primary);
+}
+
+.cropper-point.point-ne {
+    right: -5px;
+    top: -5px;
+}
+
+.cropper-point.point-nw {
+    left: -5px;
+    top: -5px;
+}
+
+.cropper-point.point-sw {
+    left: -5px;
+    bottom: -5px;
+}
+
+.cropper-point.point-se {
+    right: -5px;
+    bottom: -5px;
+}
+
+.cropper-point.point-se:before {
+    content: none;
+}

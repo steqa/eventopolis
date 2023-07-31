@@ -1,8 +1,10 @@
+import os
+
 from django.contrib.auth import logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 
-from authentication.forms import UserEmailChangeForm, \
+from authentication.forms import UserEmailChangeForm, UserImageChangeForm, \
     UserPersonalDataChangeForm, UserSlugChangeForm
 from authentication.tokens import activation_token
 from authentication.utils import decode_urlsafe_base64, get_user_by_uid, \
@@ -13,12 +15,26 @@ from eventopolis.utils import JsonFormErrorsResponse, JsonRedirectResponse
 def user_settings_personal(request):
     if request.method == 'POST':
         user = request.user
-        form = UserPersonalDataChangeForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return JsonRedirectResponse(url='user-settings-personal')
+        field_type = request.GET.get('fieldType') if request.GET.get('fieldType') else None
+        if field_type == 'image':
+            form = UserImageChangeForm(request.POST, request.FILES)
+            if form.is_valid():
+                current_image_name = os.path.basename(user.image.file.name)
+                if current_image_name != 'default_profile_image.jpg':
+                    user.image.delete()
+                image = request.FILES.get('image')
+                user.image = image
+                user.save()
+                return JsonRedirectResponse(url='user-settings-personal')
+            else:
+                return JsonFormErrorsResponse(form=form)
         else:
-            return JsonFormErrorsResponse(form=form)
+            form = UserPersonalDataChangeForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                return JsonRedirectResponse(url='user-settings-personal')
+            else:
+                return JsonFormErrorsResponse(form=form)
 
     return render(request, 'user_profile/user_settings/personal.html')
 
