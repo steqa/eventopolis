@@ -4,8 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import SetPasswordForm
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
 
+from eventopolis.utils import JsonFormErrorsResponse, JsonRedirectResponse
 from .decorators import unauthenticated_user
 from .forms import CustomUserCreationForm
 from .models import User
@@ -21,9 +21,9 @@ def registration(request):
         if form.is_valid():
             user = form.save()
             send_activation_email(request, user)
-            return JsonResponse(data={'url': reverse('activation')}, status=302)
+            return JsonRedirectResponse(url='activation')
         else:
-            return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+            return JsonFormErrorsResponse(form=form)
 
     return render(request, 'authentication/registration.html')
 
@@ -52,11 +52,14 @@ def login_user(request):
         user = authenticate(email=email, password=password)
         if user:
             login(request, user)
-            return JsonResponse(data={'url': reverse('events')}, status=302)
+            return JsonRedirectResponse(url='events')
         else:
-            response = {'email': [
-                {'message': 'Неверный адрес электронной почты или пароль.'}]}
-            return JsonResponse(data=json.dumps(response), status=400, safe=False)
+            data = {
+                'email': [
+                    {'message': 'Неверный адрес электронной почты или пароль.'}
+                ]
+            }
+            return JsonResponse(data=json.dumps(data), status=400, safe=False)
 
     return render(request, 'authentication/login.html')
 
@@ -68,11 +71,14 @@ def reset_password(request):
         user = User.objects.filter(email=email)
         if user.exists():
             send_reset_password_email(request, user.first())
-            return JsonResponse(data={'url': reverse('activation')}, status=302)
+            return JsonRedirectResponse(url='activation')
         else:
-            response = {'email': [
-                {'message': 'Неверный адрес электронной почты.'}]}
-            return JsonResponse(data=json.dumps(response), status=400, safe=False)
+            data = {
+                'email': [
+                    {'message': 'Неверный адрес электронной почты.'}
+                ]
+            }
+            return JsonResponse(data=json.dumps(data), status=400, safe=False)
     return render(request, 'authentication/reset_password.html')
 
 
@@ -84,9 +90,9 @@ def reset_password_confirm(request, uid: str, token: str):
             form = SetPasswordForm(user, request.POST)
             if form.is_valid():
                 form.save()
-                return JsonResponse(data={'url': reverse('login')}, status=302)
+                return JsonRedirectResponse(url='login')
             else:
-                return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+                return JsonFormErrorsResponse(form=form)
 
         return render(request, 'authentication/reset_password_confirm.html')
     else:

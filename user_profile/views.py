@@ -1,24 +1,24 @@
 from django.contrib.auth import logout
 from django.contrib.auth.forms import PasswordChangeForm
-from django.http.response import JsonResponse
 from django.shortcuts import render
-from django.urls import reverse
 
 from authentication.forms import UserEmailChangeForm, \
     UserPersonalDataChangeForm, UserSlugChangeForm
 from authentication.tokens import activation_token
 from authentication.utils import decode_urlsafe_base64, get_user_by_uid, \
     send_change_email_email
+from eventopolis.utils import JsonFormErrorsResponse, JsonRedirectResponse
 
 
 def user_settings_personal(request):
     if request.method == 'POST':
-        form = UserPersonalDataChangeForm(request.POST, instance=request.user)
+        user = request.user
+        form = UserPersonalDataChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return JsonResponse(data={'url': reverse('user-settings-personal')}, status=302)
+            return JsonRedirectResponse(url='user-settings-personal')
         else:
-            return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+            return JsonFormErrorsResponse(form=form)
 
     return render(request, 'user_profile/user_settings/personal.html')
 
@@ -32,16 +32,16 @@ def user_settings_security(request):
             if form.is_valid():
                 user.slug = request.POST.get('slug')
                 user.save()
-                return JsonResponse(data={'url': reverse('user-settings-security')}, status=302)
+                return JsonRedirectResponse(url='user-settings-security')
             else:
-                return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+                return JsonFormErrorsResponse(form=form)
         elif field_type == 'password':
             form = PasswordChangeForm(user, request.POST)
             if form.is_valid():
                 form.save()
-                return JsonResponse(data={'url': reverse('login')}, status=302)
+                return JsonRedirectResponse(url='login')
             else:
-                return JsonResponse(data=form.errors.as_json(), status=400, safe=False)
+                return JsonFormErrorsResponse(form=form)
 
     return render(request, 'user_profile/user_settings/security.html')
 
@@ -56,13 +56,13 @@ def change_email(request):
     if request.method == 'POST':
         form = UserEmailChangeForm(request.user, request.POST)
         if form.is_valid():
-            send_change_email_email(request, request.user,
-                                    form.cleaned_data.get('new_email1'))
-            return JsonResponse(
-                data={'url': reverse('change-email-request-confirmation')}, status=302)
+            new_email = form.cleaned_data.get('new_email1')
+            send_change_email_email(
+                request, user=request.user, new_email=new_email
+            )
+            return JsonRedirectResponse(url='change-email-request-confirmation')
         else:
-            return JsonResponse(
-                data=form.errors.as_json(), status=400, safe=False)
+            return JsonFormErrorsResponse(form=form)
 
     return render(request, 'user_profile/user_settings/change_email.html')
 
