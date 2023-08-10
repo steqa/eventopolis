@@ -5,6 +5,9 @@
 {% block title %}Вход{% endblock %}
 
 {% block content %}
+    <script type="text/javascript" defer
+            src="{% static 'js/authentication/login/validate-form.js' %}"></script>
+
     <h1 class="mb-3">Вход</h1>
     <form id="form">
         {% csrf_token %}
@@ -30,5 +33,4 @@
             </div>
         </div>
     </form>
-    <script type="text/javascript" src="{% static 'js/authentication/login/validate-form.js' %}"></script>
 {% endblock %}

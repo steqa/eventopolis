@@ -4,6 +4,17 @@
 {% block active-user-settings %}active{% endblock %}
 
 {% block content %}
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/update-save-btn.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/authentication/validators.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/display-feedback.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/get-form-data.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/send-form-data.js' %}"></script>
+
     <div class="row">
         <div class="col-xl-3 col-12 order-lg-1 order-1 mb-4 mb-xl-0">
             <ul class="navbar-nav">
@@ -46,9 +57,4 @@
         {% block settings %}{% endblock %}
 
     </div>
-    <script type="text/javascript" src="{% static 'js/user_profile/user_settings/update-save-btn.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/authentication/validators.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/display-feedback.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/get-form-data.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/send-form-data.js' %}"></script>
 {% endblock %}

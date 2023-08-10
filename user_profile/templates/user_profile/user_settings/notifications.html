@@ -5,7 +5,18 @@
 {% block active-notifications-settings %}active{% endblock %}
 
 {% block settings %}
-    <div class="col-xl-6 col-12 order-lg-2 order-3">
+    {% include 'user_profile/user_settings/preloader.html' %}
+
+    <script type="text/javascript" defer
+            src="{% static 'js/handler.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/notifications_settings/validate-form.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/notifications_settings/checkbox.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/preloader.js' %}"></script>
+
+    <div class="col-xl-6 col-12 order-lg-2 order-3 contentJS visually-hidden">
         <form id="form">
             {% csrf_token %}
             <div class="mb-3">
@@ -33,9 +44,4 @@
             </button>
         </form>
     </div>
-    <script type="text/javascript" src="{% static 'js/handler.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/notifications_settings/validate-form.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/notifications_settings/checkbox.js' %}"></script>
 {% endblock %}

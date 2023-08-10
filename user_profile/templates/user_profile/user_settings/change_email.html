@@ -5,6 +5,11 @@
 {% block active-security-settings %}active{% endblock %}
 
 {% block settings %}
+    <script type="text/javascript" defer
+            src="{% static 'js/handler.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/change_email/validate-form.js' %}"></script>
+
     <div class="col-xl-6 col-12 order-lg-2 order-3">
         <form id="form">
             {% csrf_token %}
@@ -24,8 +29,4 @@
             </button>
         </form>
     </div>
-
-    <script type="text/javascript" src="{% static 'js/handler.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/change_email/validate-form.js' %}"></script>
 {% endblock %}

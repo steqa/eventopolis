@@ -7,7 +7,22 @@
 {% block active-security-settings %}active{% endblock %}
 
 {% block settings %}
-    <div class="col-xl-6 col-12 order-lg-2 order-3">
+    {% include 'user_profile/user_settings/preloader.html' %}
+
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/security_settings/handler.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/security_settings/validate-form.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/security_settings/update-modal-save-btn.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/security_settings/modal-handler.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/security_settings/validate-modal-form.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/preloader.js' %}"></script>
+
+    <div class="col-xl-6 col-12 order-lg-2 order-3 contentJS visually-hidden">
         <form id="form">
             {% csrf_token %}
             <div class="mb-3">
@@ -91,14 +106,4 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/security_settings/handler.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/security_settings/validate-form.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/security_settings/update-modal-save-btn.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/security_settings/modal-handler.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'js/user_profile/user_settings/security_settings/validate-modal-form.js' %}"></script>
 {% endblock %}
