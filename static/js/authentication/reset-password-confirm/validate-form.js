@@ -4,7 +4,7 @@ function validateForm(form) {
 
     const feedback = [
         [passwordInput, validatePassword(passwordInput.value)],
-        [secondPasswordInput, validateSecondPassword(secondPasswordInput.value)]
+        [secondPasswordInput, validateSecondPassword(secondPasswordInput.value, passwordInput.id, secondPasswordInput.id)]
     ];
 
     return displayFeedback(feedback);

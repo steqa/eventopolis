@@ -52,6 +52,7 @@ const imageForm = document.getElementById('imageForm');
 imageForm.addEventListener('submit', function (event) {
     event.preventDefault();
     if (cropper) {
+        activateLoader();
         cropper.getCroppedCanvas().toBlob((blob) => {
             let formData = new FormData()
             formData.append(imageInput.name, blob, imageInput.value);
@@ -65,6 +66,7 @@ imageForm.addEventListener('submit', function (event) {
                 body: formData
             })
                 .then((response) => {
+                    deactivateLoader();
                     responseStatus = response.status
                     return response.json();
                 })
