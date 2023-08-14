@@ -5,7 +5,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 
 from authentication.forms import UserEmailChangeForm, UserImageChangeForm, \
-    UserPersonalDataChangeForm, UserSlugChangeForm
+    UserPersonalDataChangeForm, UserSlugChangeForm, \
+    UserTelegramUsernameChangeForm
 from authentication.tokens import activation_token
 from authentication.utils import decode_urlsafe_base64, get_user_by_uid, \
     send_change_email_email
@@ -44,10 +45,9 @@ def user_settings_security(request):
         user = request.user
         field_type = request.GET.get('fieldType') if request.GET.get('fieldType') else None
         if field_type == 'slug':
-            form = UserSlugChangeForm(request.POST)
+            form = UserSlugChangeForm(request.POST, instance=user)
             if form.is_valid():
-                user.slug = request.POST.get('slug')
-                user.save()
+                form.save()
                 return JsonRedirectResponse(url='user-settings-security')
             else:
                 return JsonFormErrorsResponse(form=form)
@@ -64,8 +64,13 @@ def user_settings_security(request):
 
 def user_settings_notifications(request):
     if request.method == 'POST':
-        print(request.POST)
-    return render(request, 'user_profile/user_settings/notifications.html')
+        user = request.user
+        form = UserTelegramUsernameChangeForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return JsonRedirectResponse(url='user-settings-notifications')
+        else:
+            return JsonFormErrorsResponse(form=form)
 
 
 def change_email(request):
