@@ -1,9 +1,10 @@
+const telegramUsernameInput = document.getElementById('telegram-username');
 const telegramNotificationsInput = document.getElementById('telegram-notifications');
 
-telegramNotificationsInput.addEventListener('input', () => {
-    if (telegramNotificationsInput.value === 'False') {
-        telegramNotificationsInput.value = 'True';
-    } else {
-        telegramNotificationsInput.value = 'False';
-    }
-})
+if (telegramNotificationsInput.value === 'True') {
+    telegramNotificationsInput.setAttribute('checked', 'true');
+}
+
+if (!telegramUsernameInput.value) {
+    telegramNotificationsInput.setAttribute('disabled', 'true');
+}

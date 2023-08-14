@@ -1,5 +1,6 @@
 import os
 
+from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
@@ -71,6 +72,9 @@ def user_settings_notifications(request):
             return JsonRedirectResponse(url='user-settings-notifications')
         else:
             return JsonFormErrorsResponse(form=form)
+
+    context = {'telegram_bot_url': settings.TELEGRAM_BOT_URL}
+    return render(request, 'user_profile/user_settings/notifications.html', context)
 
 
 def change_email(request):

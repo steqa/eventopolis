@@ -9,7 +9,8 @@ urlpatterns = [
     path('authentication/', include('authentication.urls')),
     path('', lambda request: redirect('events/', permanent=True)),
     path('events/', include('events_app.urls')),
-    path('user/', include('user_profile.urls'))
+    path('user/', include('user_profile.urls')),
+    path('tg-notification/', include('telegram_notifications.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

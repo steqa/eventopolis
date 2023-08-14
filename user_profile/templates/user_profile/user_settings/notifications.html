@@ -7,6 +7,8 @@
 {% block settings %}
     {% include 'user_profile/user_settings/preloader.html' %}
 
+    <link rel="stylesheet" href="{% static 'css/loader.css' %}">
+
     <script type="text/javascript" defer
             src="{% static 'js/handler.js' %}"></script>
     <script type="text/javascript" defer
@@ -15,6 +17,12 @@
             src="{% static 'js/user_profile/user_settings/notifications_settings/checkbox.js' %}"></script>
     <script type="text/javascript" defer
             src="{% static 'js/user_profile/user_settings/preloader.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/user_profile/user_settings/notifications_settings/telegram-notifications-handler.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/push-notification.js' %}"></script>
+    <script type="text/javascript" defer
+            src="{% static 'js/loader.js' %}"></script>
 
     <div class="col-xl-6 col-12 order-lg-2 order-3 contentJS visually-hidden">
         <form id="form">
@@ -31,8 +39,19 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="mb-3 form-check">
-                <input class="form-check-input form-control p-0" type="checkbox" id="telegram-notifications"
-                       name="telegram_notifications" value="{{ user.telegram_notifications }}">
+                {% if user.telegram_notifications %}
+                    <input class="form-check-input p-0" type="checkbox" id="telegram-notifications"
+                           name="telegram_notifications" value="{{ user.telegram_notifications }}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#disableTelegramNotificationsModal"
+                           onclick="event.preventDefault()">
+                {% else %}
+                    <input class="form-check-input p-0" type="checkbox" id="telegram-notifications"
+                           name="telegram_notifications" value="{{ user.telegram_notifications }}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#enableTelegramNotificationsModal"
+                           onclick="event.preventDefault()">
+                {% endif %}
                 <label class="form-check-label" for="telegram-notifications">
                     Получать уведомления в Telegram
                 </label>
@@ -43,5 +62,74 @@
             <button type="submit" class="btn btn-success btn-sm mt-2 fw-semibold" id="saveBtn" disabled>Сохранить
             </button>
         </form>
+    </div>
+
+    <div class="modal fade" id="enableTelegramNotificationsModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <hr class="mb-3">
+                    <p class="mb-2">Для включения уведомлений активируйте бота.</p>
+                    <ol>
+                        <li>
+                            Войдите в Telegram под своим именем:
+                            <span class="text-primary">@{{ user.telegram_username }}</span>
+                        </li>
+                        <li>
+                            Откройте бота по ссылке:
+                            <a target="_blank" rel="noopener noreferrer"
+                               href="https://{{ telegram_bot_url }}" class="text-primary">
+                                {{ telegram_bot_url }}
+                            </a>
+                        </li>
+                        <li>
+                            Нажмите "<span class="text-primary">START</span>" или
+                            отправьте сообщение "<span class="text-primary">/start</span>"
+                        </li>
+                        <li>
+                            Нажмите кнопку Продолжить
+                        </li>
+                    </ol>
+                    <hr class="mt-4">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Отменить</button>
+                    <a href="{% url 'enable-telegram-bot' %}" class="btn btn-primary btn-sm"
+                       id="enableTelegramNotificationsBtn">
+                        Продолжить
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="disableTelegramNotificationsModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="modalForm">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <hr class="mb-3">
+                        <p class="mb-0 pb-0">Вы действительно хотите выключить Telegram уведомления?</p>
+                        <hr class="mt-4">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Отменить</button>
+                        <a href="{% url 'disable-telegram-bot' %}" class="btn btn-primary btn-sm"
+                           id="disableTelegramNotificationsBtn">
+                            Продолжить
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

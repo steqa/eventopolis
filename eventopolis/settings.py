@@ -45,7 +45,8 @@ INSTALLED_APPS = [
 
     'authentication.apps.AuthenticationConfig',
     'events_app.apps.EventsAppConfig',
-    'user_profile.apps.UserProfileConfig'
+    'user_profile.apps.UserProfileConfig',
+    'telegram_notifications.apps.TelegramNotificationsConfig'
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,9 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 # Account
 
 EMAIL_ACTIVATION_TIMEOUT = 300
+
+# Telegram Bot API
+
+TELEGRAM_BOT_URL = os.getenv('TELEGRAM_BOT_URL')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_BOT_API_URL = f"{os.getenv('TELEGRAM_BOT_API_URL')}{TELEGRAM_BOT_TOKEN}/"

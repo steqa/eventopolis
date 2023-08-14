@@ -66,12 +66,12 @@ imageForm.addEventListener('submit', function (event) {
                 body: formData
             })
                 .then((response) => {
-                    deactivateLoader();
                     responseStatus = response.status
                     return response.json();
                 })
                 .then((data) => {
                     if (responseStatus === 400) {
+                        deactivateLoader();
                         const errors = JSON.parse(data);
                         if (imageInput.name in errors) {
                             errorsDiv.innerText = errors[imageInput.name][0]['message'];
