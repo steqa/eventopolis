@@ -11,16 +11,16 @@ def get_last_bot_command(telegram_username: str) -> TelegramBotCommands:
     )
     updates = response.json()['result']
 
-    messages = []
+    user_messages = []
     for update in updates:
         from_user = update['message']['from']['username']
         if from_user != telegram_username:
             continue
         text = update['message']['text']
-        messages.append(text)
+        user_messages.append(text)
 
     last_command = None
-    for message in messages[::-1]:
+    for message in user_messages[::-1]:
         if message in TelegramBotCommands.values():
             last_command = TelegramBotCommands(message)
             break

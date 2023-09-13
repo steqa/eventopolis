@@ -1,16 +1,22 @@
 import os
 import shutil
-import tempfile
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
+from io import BytesIO
 from django.test import TestCase
 
 from authentication.models import User
 
 
 class TestModels(TestCase):
+    image_dir = os.path.join(settings.MEDIA_ROOT, 'user_images/0/')
+
+    def image_dir_cleanup(self):
+        shutil.rmtree(self.image_dir)
+
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create(
@@ -18,8 +24,8 @@ class TestModels(TestCase):
             email='test@gmail.com',
             first_name='First',
             last_name='Last',
-            password='test1pass123',
-            is_email_verified=True
+            is_email_verified=True,
+            password='test1pass123'
         )
 
     def test_default_path_to_the_profile_image_is_set_correctly(self):
@@ -28,38 +34,72 @@ class TestModels(TestCase):
         self.assertEqual(self.user.image.path, expected_filepath)
 
     def test_path_to_the_profile_image_is_set_correctly(self):
-        image_dir = os.path.join(settings.MEDIA_ROOT, 'user_images/0/')
+        self.user.image = get_test_image()
+        self.user.save()
 
-        def cleanup():
-            shutil.rmtree(image_dir)
-
-        with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp_file:
-            self.user.image = SimpleUploadedFile(tmp_file.name, tmp_file.read())
-            self.user.save()
-
-        self.addCleanup(cleanup)
-        self.assertEqual(self.user.image.path, image_dir + 'profile_image.jpg')
+        self.addCleanup(self.image_dir_cleanup)
+        self.assertEqual(self.user.image.path, self.image_dir + 'profile_image.jpg')
 
     def test_save(self):
+        # first_name and last_name lower case
         with self.assertRaises(ValidationError) as error:
-            User.objects.create(
-                email='test2@gmail.com',
-                first_name='first',
-                last_name='last',
-                password='test1pass123',
-                is_email_verified=True
-            )
-
+            create_user(first_name='first', last_name='last')
         self.assertEqual(len(error.exception.message_dict), 2)
 
+        # first_name and last_name the letters only
         with self.assertRaises(ValidationError) as error:
-            User.objects.create(
-                email='test2@gmail.com',
-                first_name='1',
-                last_name='2',
-                telegram_username='test-',
-                password='test1pass123',
-                is_email_verified=True
-            )
-            
-        self.assertEqual(len(error.exception.message_dict), 3)
+            create_user(first_name='0', last_name='0')
+        self.assertEqual(len(error.exception.message_dict), 2)
+
+        # telegram_username
+        with self.assertRaises(ValidationError) as error:
+            create_user(telegram_username='`~!@#$%^&*()-=+"№;:?<>{}[]/\\.,')
+        self.assertEqual(len(error.exception.message_dict), 1)
+
+        # image
+        with self.assertRaises(ValidationError) as error:
+            test_image = get_test_image(size=(8200, 8200))
+            create_user(image=test_image)
+        self.assertEqual(len(error.exception.message_dict), 1)
+
+        with self.assertRaises(ValidationError) as error:
+            test_image = get_test_image(img_format='PNG')
+            create_user(image=test_image)
+        self.assertEqual(len(error.exception.message_dict), 1)
+
+        # slug
+        with self.assertRaises(ValidationError) as error:
+            create_user(slug=self.user.slug)
+        self.assertEqual(len(error.exception.message_dict), 1)
+
+
+def create_user(
+        email='testemail@gmail.com',
+        first_name='First',
+        last_name='Last',
+        telegram_username=None,
+        image=None,
+        slug=None,
+        is_email_verified=True,
+        password='test1pass123'
+):
+    User.objects.create(
+        email=email,
+        first_name=first_name,
+        last_name=last_name,
+        telegram_username=telegram_username,
+        image=image,
+        slug=slug,
+        is_email_verified=is_email_verified,
+        password=password
+    )
+
+
+def get_test_image(size=(8150, 8150), img_format='JPEG'):
+    image = Image.new(mode='RGB', size=size, color='white')
+    buffer = BytesIO()
+    image.save(buffer, format=img_format, quality=100)
+    buffer.seek(0)
+    test_image = SimpleUploadedFile(f'test_image.{img_format.lower()}', buffer.read())
+    buffer.close()
+    return test_image

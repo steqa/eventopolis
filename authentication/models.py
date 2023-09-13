@@ -1,6 +1,6 @@
 import hashlib
 from string import ascii_letters, digits
-
+import mimetypes
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
@@ -104,17 +104,14 @@ class User(AbstractBaseUser, PermissionsMixin):
                 errors['telegram_username'] = error
 
         if self.image:
-            allowed_file_types = ('jpg', 'jpeg')
+            allowed_file_types = ('image/jpeg',)
             allowed_file_size = 1048576
 
             if self.image.size > allowed_file_size:
                 error = 'Размер изображения не может превышать 1 МБ.'
                 errors['image'] = error
 
-            file_type = None
-            if len(self.image.name.split('.')) > 1:
-                file_type = self.image.name.split('.')[-1]
-
+            file_type, _ = mimetypes.guess_type(self.image.name)
             if file_type not in allowed_file_types:
                 error = 'Доступные форматы изображения: JPG, JPEG.'
                 errors['image'] = error
