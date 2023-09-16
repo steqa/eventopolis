@@ -140,6 +140,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# URLs
+
+LOGIN_URL = '/authentication/login/'
+
 # Email config
 
 EMAIL_HOST = os.getenv('EMAIL_HOST')

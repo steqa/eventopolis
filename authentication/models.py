@@ -1,6 +1,7 @@
 import hashlib
-from string import ascii_letters, digits
 import mimetypes
+from string import ascii_letters, digits
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
@@ -40,8 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     image = models.ImageField(
         'изображение',
         upload_to=_get_profile_image_filepath,
-        default=_get_default_profile_image,
-        null=True, blank=True)
+        default=_get_default_profile_image)
     slug = models.SlugField(
         'текстовый идентификатор страницы',
         unique=True, blank=True, null=True, max_length=32,

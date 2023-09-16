@@ -2,6 +2,7 @@ import os
 
 from django.conf import settings
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 
@@ -14,6 +15,7 @@ from authentication.utils import decode_urlsafe_base64, get_user_by_uid, \
 from eventopolis.utils import JsonFormErrorsResponse, JsonRedirectResponse
 
 
+@login_required
 def user_settings_personal(request):
     if request.method == 'POST':
         user = request.user
@@ -23,7 +25,7 @@ def user_settings_personal(request):
             if form.is_valid():
                 current_image_name = os.path.basename(user.image.file.name)
                 if current_image_name != 'default_profile_image.jpg':
-                    user.image.delete()
+                    os.remove(user.image.path)
                 image = request.FILES.get('image')
                 user.image = image
                 user.save()
@@ -41,6 +43,7 @@ def user_settings_personal(request):
     return render(request, 'user_profile/user_settings/personal.html')
 
 
+@login_required
 def user_settings_security(request):
     if request.method == 'POST':
         user = request.user
@@ -63,6 +66,7 @@ def user_settings_security(request):
     return render(request, 'user_profile/user_settings/security.html')
 
 
+@login_required
 def user_settings_notifications(request):
     if request.method == 'POST':
         user = request.user
@@ -77,6 +81,7 @@ def user_settings_notifications(request):
     return render(request, 'user_profile/user_settings/notifications.html', context)
 
 
+@login_required
 def change_email(request):
     if request.method == 'POST':
         form = UserEmailChangeForm(request.user, request.POST)
@@ -92,10 +97,12 @@ def change_email(request):
     return render(request, 'user_profile/user_settings/change_email.html')
 
 
+@login_required
 def change_email_request_confirmation(request):
     return render(request, 'user_profile/user_settings/change_email_request_confirmation.html')
 
 
+@login_required
 def change_email_confirm(request, uid: str, token: str, new_email: str):
     user = get_user_by_uid(uid)
     if user and activation_token.check_token(user, token):

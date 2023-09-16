@@ -1,11 +1,11 @@
 import os
 import shutil
+from io import BytesIO
 
+from PIL import Image
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
-from io import BytesIO
 from django.test import TestCase
 
 from authentication.models import User
@@ -78,7 +78,7 @@ def create_user(
         first_name='First',
         last_name='Last',
         telegram_username=None,
-        image=None,
+        image=os.path.basename('default_profile_image.jpg'),
         slug=None,
         is_email_verified=True,
         password='test1pass123'

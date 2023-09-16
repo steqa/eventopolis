@@ -80,6 +80,8 @@ class UserSlugChangeForm(forms.ModelForm):
 
 
 class UserImageChangeForm(forms.ModelForm):
+    image = forms.ImageField(required=True)
+
     class Meta:
         model = User
         fields = ('image',)
