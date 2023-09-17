@@ -6,12 +6,13 @@ from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 
 from eventopolis.utils import JsonFormErrorsResponse, JsonRedirectResponse
+
 from .decorators import unauthenticated_user
 from .forms import CustomUserCreationForm
 from .models import User
 from .tokens import activation_token
-from .utils import get_user_by_uid, send_activation_email, \
-    send_reset_password_email
+from .utils import (get_user_by_uid, send_activation_email,
+                    send_reset_password_email)
 
 
 @unauthenticated_user

@@ -3,12 +3,11 @@ import os
 import shutil
 from io import BytesIO
 
-from PIL import Image
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import Client
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
+from PIL import Image
 
 from authentication.models import User
 

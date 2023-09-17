@@ -2,11 +2,11 @@ import os
 import shutil
 from io import BytesIO
 
-from PIL import Image
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
+from PIL import Image
 
 from authentication.models import User
 

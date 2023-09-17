@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from authentication.forms import CustomUserCreationForm, UserEmailChangeForm, \
-    UserPersonalDataChangeForm
+from authentication.forms import (CustomUserCreationForm, UserEmailChangeForm,
+                                  UserPersonalDataChangeForm)
 from authentication.models import User
 
 

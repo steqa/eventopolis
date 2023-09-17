@@ -6,12 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 
-from authentication.forms import UserEmailChangeForm, UserImageChangeForm, \
-    UserPersonalDataChangeForm, UserSlugChangeForm, \
-    UserTelegramUsernameChangeForm
+from authentication.forms import (UserEmailChangeForm, UserImageChangeForm,
+                                  UserPersonalDataChangeForm,
+                                  UserSlugChangeForm,
+                                  UserTelegramUsernameChangeForm)
 from authentication.tokens import activation_token
-from authentication.utils import decode_urlsafe_base64, get_user_by_uid, \
-    send_change_email_email
+from authentication.utils import (decode_urlsafe_base64, get_user_by_uid,
+                                  send_change_email_email)
 from eventopolis.utils import JsonFormErrorsResponse, JsonRedirectResponse
 
 
