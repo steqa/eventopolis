@@ -44,12 +44,13 @@
             </div>
             <div class="mb-3">
                 <label for="about-me" class="form-label fw-semibold mb-1">Обо мне</label>
+                {% if user.about_me %}
                 <textarea class="form-control form-control-sm" id="about-me" name="about_me"
-                          rows="5">
-                    {% if user.about_me %}
-                        {{ user.about_me }}
-                    {% endif %}
-                </textarea>
+                          rows="5">{{ user.about_me }}</textarea>
+                {% else %}
+                <textarea class="form-control form-control-sm" id="about-me" name="about_me"
+                          rows="5"></textarea>
+                {% endif %}
                 <div class="w-100 text-end">
                     <span class="input-info" id="aboutMeLength">0 / 150</span>
                 </div>

@@ -97,6 +97,76 @@ class UserSettingsPersonal(BaseTestCase):
         self.assertEqual(redirect_url, self.user_settings_personal_url)
 
 
+class UserSettingsSecurity(BaseTestCase):
+    user_settings_security_url = reverse('user-settings-security')
+    login_url = reverse('login')
+
+    def test_GET_unauthorized(self):
+        response = self.unauthorized_client.get(self.user_settings_security_url)
+
+        self.assertRedirects(
+            response, self.login_url + f'?next={self.user_settings_security_url}'
+        )
+
+    def test_GET_authorized(self):
+        response = self.authorized_client.get(self.user_settings_security_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user_profile/user_settings/security.html')
+
+    def test_POST_unauthorized(self):
+        response = self.unauthorized_client.post(self.user_settings_security_url)
+
+        self.assertRedirects(
+            response, self.login_url + f'?next={self.user_settings_security_url}'
+        )
+
+    def test_POST_authorized_no_data(self):
+        response = self.authorized_client.post(self.user_settings_security_url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_POST_authorized_invalid_slug(self):
+        response = self.authorized_client.post(
+            self.user_settings_security_url + '?fieldType=slug',
+            {'slug': '$invalid-slug$'}
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_POST_authorized_valid_slug(self):
+        response = self.authorized_client.post(
+            self.user_settings_security_url + '?fieldType=slug',
+            {'slug': 'valid_slug-5'})
+        redirect_url = json.loads(response.content)['url']
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(redirect_url, self.user_settings_security_url)
+        self.assertEqual(User.objects.get(email='test@gmail.com').slug, 'valid_slug-5')
+
+    def test_POST_authorized_invalid_password(self):
+        response = self.authorized_client.post(
+            self.user_settings_security_url + '?fieldType=password',
+            {'old_password': 'test1pass123',
+             'new_password1': 'password',
+             'new_password2': 'password'}
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_POST_authorized_valid_password(self):
+        response = self.authorized_client.post(
+            self.user_settings_security_url + '?fieldType=password',
+            {'old_password': 'test1pass123',
+             'new_password1': 'test1pass123_new',
+             'new_password2': 'test1pass123_new'}    
+        )
+        redirect_url = json.loads(response.content)['url']
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(redirect_url, self.login_url)
+
+
 def get_test_image(size=(8150, 8150), img_format='JPEG'):
     image = Image.new(mode='RGB', size=size, color='white')
     buffer = BytesIO()
