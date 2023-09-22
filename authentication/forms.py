@@ -88,6 +88,8 @@ class UserImageChangeForm(forms.ModelForm):
 
 
 class UserTelegramUsernameChangeForm(forms.ModelForm):
+    telegram_username = forms.CharField(max_length=32, min_length=5, required=True)
+    
     class Meta:
         model = User
         fields = ('telegram_username',)

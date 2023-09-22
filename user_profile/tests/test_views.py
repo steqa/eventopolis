@@ -167,6 +167,53 @@ class UserSettingsSecurity(BaseTestCase):
         self.assertEqual(redirect_url, self.login_url)
 
 
+class UserSettingsNotifications(BaseTestCase):
+    user_settings_notifications_url = reverse('user-settings-notifications')
+
+    def test_GET_unauthorized(self):
+        response = self.unauthorized_client.get(self.user_settings_notifications_url)
+
+        self.assertRedirects(
+            response, self.login_url + f'?next={self.user_settings_notifications_url}'
+        )
+
+    def test_GET_authorized(self):
+        response = self.authorized_client.get(self.user_settings_notifications_url)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user_profile/user_settings/notifications.html')
+        self.assertEqual(response.context.get('telegram_bot_url'), settings.TELEGRAM_BOT_URL)
+
+    def test_POST_unauthorized(self):
+        response = self.unauthorized_client.post(self.user_settings_notifications_url)
+
+        self.assertRedirects(
+            response, self.login_url + f'?next={self.user_settings_notifications_url}'
+        )
+
+    def test_POST_authorized_no_data(self):
+        response = self.authorized_client.post(self.user_settings_notifications_url)
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_POST_authorized_invalid_data(self):
+        response = self.authorized_client.post(self.user_settings_notifications_url, {
+            'telegram_username': 'invalid-username',
+        })
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_POST_authorized_valid_data(self):
+        response = self.authorized_client.post(self.user_settings_notifications_url, {
+            'telegram_username': 'valid_username',
+        })
+        redirect_url = json.loads(response.content)['url']
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(redirect_url, self.user_settings_notifications_url)
+        self.assertEqual(User.objects.get(email='test@gmail.com').telegram_username, 'valid_username')
+
+
 def get_test_image(size=(8150, 8150), img_format='JPEG'):
     image = Image.new(mode='RGB', size=size, color='white')
     buffer = BytesIO()
