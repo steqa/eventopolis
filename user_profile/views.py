@@ -14,6 +14,7 @@ from authentication.tokens import activation_token
 from authentication.utils import (decode_urlsafe_base64, get_user_by_uid,
                                   send_change_email_email)
 from eventopolis.utils import JsonFormErrorsResponse, JsonRedirectResponse
+from eventopolis.s3_storage import delete_image
 
 
 @login_required
@@ -26,7 +27,7 @@ def user_settings_personal(request):
             if form.is_valid():
                 current_image_name = os.path.basename(user.image.file.name)
                 if current_image_name != 'default_profile_image.jpg':
-                    os.remove(user.image.path)
+                    delete_image(user.image)
                 image = request.FILES.get('image')
                 user.image = image
                 user.save()

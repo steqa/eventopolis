@@ -13,10 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-from django.core.management.utils import get_random_secret_key
-from dotenv import load_dotenv
-
-load_dotenv()
+from . import locals_vars
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', default=get_random_secret_key())
+SECRET_KEY = locals_vars.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -87,11 +84,11 @@ WSGI_APPLICATION = 'eventopolis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
+        'NAME': locals_vars.PG_NAME,
+        'USER': locals_vars.PG_USER,
+        'PASSWORD': locals_vars.PG_PASSWORD,
+        'HOST': locals_vars.PG_HOST,
+        'PORT': locals_vars.PG_PORT,
     }
 }
 
@@ -135,6 +132,17 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Staticfiles storage
+
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'eventopolis.s3_storage.MediaStorage'
+    STATICFILES_STORAGE = 'eventopolis.s3_storage.StaticStorage'
+
+    AWS_S3_ENDPOINT_URL = locals_vars.AWS_S3_ENDPOINT_URL
+    AWS_S3_ACCESS_KEY_ID = locals_vars.AWS_S3_ACCESS_KEY_ID
+    AWS_S3_SECRET_ACCESS_KEY = locals_vars.AWS_S3_SECRET_ACCESS_KEY
+    AWS_QUERYSTRING_AUTH = False
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -146,11 +154,12 @@ LOGIN_URL = '/authentication/login/'
 
 # Email config
 
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+EMAIL_HOST = locals_vars.EMAIL_HOST
+EMAIL_PORT = locals_vars.EMAIL_PORT
+EMAIL_HOST_USER = locals_vars.EMAIL_HOST_USER
+EMAIL_FROM_USER = locals_vars.EMAIL_FROM_USER
+EMAIL_HOST_PASSWORD = locals_vars.EMAIL_HOST_PASSWORD
+EMAIL_USE_SSL = True
 
 # Account
 
@@ -158,6 +167,6 @@ EMAIL_ACTIVATION_TIMEOUT = 300
 
 # Telegram Bot API
 
-TELEGRAM_BOT_URL = os.getenv('TELEGRAM_BOT_URL')
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_BOT_API_URL = f"{os.getenv('TELEGRAM_BOT_API_URL')}{TELEGRAM_BOT_TOKEN}/"
+TELEGRAM_BOT_URL = locals_vars.TELEGRAM_BOT_URL
+TELEGRAM_BOT_TOKEN = locals_vars.TELEGRAM_BOT_TOKEN
+TELEGRAM_BOT_API_URL = f"{locals_vars.TELEGRAM_BOT_API_URL}{TELEGRAM_BOT_TOKEN}/"
