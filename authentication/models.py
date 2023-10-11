@@ -10,60 +10,82 @@ from django.db import models
 from .managers import UserManager
 
 
-def _get_profile_image_filepath(self, *args):
+def _get_image_filepath(self, *args) -> str:
     return f'user_images/{self.pk}/profile_image.jpg'
 
 
-def _get_default_profile_image():
+def _get_default_image() -> str:
     return 'default_profile_image.jpg'
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
-        'электронная почта',
-        max_length=260, unique=True)
+        verbose_name='электронная почта',
+        max_length=260,
+        unique=True
+    )
     first_name = models.CharField(
-        'имя',
-        max_length=150)
+        verbose_name='имя',
+        max_length=150
+    )
     last_name = models.CharField(
-        'фамилия',
-        max_length=150)
+        verbose_name='фамилия',
+        max_length=150
+    )
     about_me = models.TextField(
-        'обо мне',
-        max_length=150, null=True, blank=True)
+        verbose_name='обо мне',
+        max_length=150,
+        null=True,
+        blank=True
+    )
     telegram_username = models.CharField(
-        'имя пользователя телеграм',
-        max_length=32, null=True, blank=True,
-        validators=[MinLengthValidator(5)])
+        verbose_name='имя пользователя телеграм',
+        validators=[MinLengthValidator(5)],
+        max_length=32,
+        null=True,
+        blank=True
+    )
     telegram_notifications = models.BooleanField(
-        'получать уведомления в телеграм',
-        default=False)
+        verbose_name='получать уведомления в телеграм',
+        default=False
+    )
     image = models.ImageField(
-        'изображение',
-        upload_to=_get_profile_image_filepath,
-        default=_get_default_profile_image)
+        verbose_name='изображение',
+        upload_to=_get_image_filepath,
+        default=_get_default_image
+    )
     slug = models.SlugField(
-        'текстовый идентификатор страницы',
-        unique=True, blank=True, null=True, max_length=32,
-        validators=[MinLengthValidator(5)])
+        verbose_name='текстовый идентификатор страницы',
+        validators=[MinLengthValidator(5)],
+        max_length=32,
+        unique=True,
+        null=True,
+        blank=True
+    )
     created_at = models.DateTimeField(
-        'дата создания',
-        auto_now_add=True)
+        verbose_name='дата создания',
+        auto_now_add=True
+    )
     last_login = models.DateTimeField(
-        'дата последнего входа',
-        auto_now=True)
+        verbose_name='дата последнего входа',
+        auto_now=True
+    )
     password_updated_at = models.DateTimeField(
-        'дата последнего обновления пароля',
-        auto_now_add=True)
+        verbose_name='дата последнего обновления пароля',
+        auto_now_add=True
+    )
     is_admin = models.BooleanField(
-        'статус администратора',
-        default=False)
+        verbose_name='статус администратора',
+        default=False
+    )
     is_staff = models.BooleanField(
-        'статус персонала',
-        default=False)
+        verbose_name='статус персонала',
+        default=False
+    )
     is_email_verified = models.BooleanField(
-        'статус подтверждения электронной почты',
-        default=False)
+        verbose_name='статус подтверждения электронной почты',
+        default=False
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
