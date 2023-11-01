@@ -1,6 +1,9 @@
-from django.db import models
+import mimetypes
+
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 
 def _get_image_filepath(self, image_name: str) -> str:
@@ -87,3 +90,24 @@ class EventImage(models.Model):
     
     def __str__(self):
         return self.image.name.split('/')[-1]
+
+    def clean(self):
+        errors = {}
+        allowed_file_types = ('image/jpeg',)
+        allowed_file_size = 1048576
+
+        if self.image.size > allowed_file_size:
+            error = 'Размер изображения не может превышать 1 МБ.'
+            errors['image'] = error
+
+        file_type, _ = mimetypes.guess_type(self.image.name)
+        if file_type not in allowed_file_types:
+            error = 'Доступные форматы изображения: JPG, JPEG.'
+            errors['image'] = error
+
+        if errors:
+            raise ValidationError(errors)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
