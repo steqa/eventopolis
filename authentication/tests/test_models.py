@@ -11,7 +11,7 @@ from PIL import Image
 from authentication.models import User
 
 
-class TestModels(TestCase):
+class TestUserModel(TestCase):
     image_dir = os.path.join(settings.MEDIA_ROOT, 'user_images/0/')
 
     def image_dir_cleanup(self):
