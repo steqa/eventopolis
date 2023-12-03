@@ -26,11 +26,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(
         verbose_name='имя',
-        max_length=150
+        max_length=20
     )
     last_name = models.CharField(
         verbose_name='фамилия',
-        max_length=150
+        max_length=20
     )
     about_me = models.TextField(
         verbose_name='обо мне',

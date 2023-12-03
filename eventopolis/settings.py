@@ -138,7 +138,7 @@ if not DEBUG:
     DEFAULT_FILE_STORAGE = 'eventopolis.s3_storage.MediaStorage'
     STATICFILES_STORAGE = 'eventopolis.s3_storage.StaticStorage'
 
-    AWS_S3_ENDPOINT_URL = locals_vars.AWS_S3_ENDPOINT_URL
+    AWS_S3_ENDPOINT_URL = 'https://' + locals_vars.AWS_S3_ENDPOINT_URL
     AWS_S3_ACCESS_KEY_ID = locals_vars.AWS_S3_ACCESS_KEY_ID
     AWS_S3_SECRET_ACCESS_KEY = locals_vars.AWS_S3_SECRET_ACCESS_KEY
     AWS_QUERYSTRING_AUTH = False

@@ -19,11 +19,11 @@ class Event(models.Model):
     members = models.ManyToManyField(
         to=settings.AUTH_USER_MODEL,
         verbose_name='участники',
-        related_name='участники'
+        related_name='members'
     )
     name = models.CharField(
         verbose_name='название',
-        max_length=50
+        max_length=70
     )
     description = models.TextField(
         verbose_name='описание',
@@ -32,6 +32,7 @@ class Event(models.Model):
     category = models.ForeignKey(
         to='EventCategory',
         verbose_name='категория',
+        related_name='category',
         on_delete=models.CASCADE
     )
     latitude = models.FloatField(
