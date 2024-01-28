@@ -59,3 +59,7 @@
 .btn-dark-link.btn-dark-link-sm {
     font-size: 0.875rem;
 }
+
+.pointer {
+    cursor: pointer;
+}

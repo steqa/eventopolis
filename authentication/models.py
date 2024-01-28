@@ -147,15 +147,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         if errors:
             raise ValidationError(errors)
 
+    @staticmethod
+    def generate_slug_by_email(email):
+        hasher = hashlib.sha256()
+        hasher.update(email.encode())
+        slug = hasher.hexdigest()[:15]
+        return slug
+
     def save(self, *args, **kwargs):
         self.full_clean()
         if not self.slug:
-            hasher = hashlib.sha256()
-            hasher.update(self.email.encode())
-            slug = hasher.hexdigest()[:15]
+            slug = User.generate_slug_by_email(self.email)
             while User.objects.filter(slug=slug).exists():
-                hasher.update(slug.encode())
-                slug = hasher.hexdigest()[:15]
+                slug = User.generate_slug_by_email(self.email)
 
             self.slug = slug
         return super().save(*args, **kwargs)
